@@ -25,11 +25,11 @@ function deletaComentario($codComentario)
 {
 	global $connect;
 		
-	$deleteDislikes = " DELETE FROM COMENTARIO_DISLIKE WHERE COMENTARIO_COD_COMENTARIO = $codComentario;"; 
+	$deleteDislikes = " DELETE FROM COMENTARIO_DISLIKE WHERE COMENTARIO_OCORRENCIA_COD_CO = $codComentario;"; 
 	
 	$deldislike = mysqli_query($connect, $deleteDislikes);
 	
-	$deleteLikes = " DELETE FROM COMENTARIO_LIKE WHERE COMENTARIO_COD_COMENTARIO = $codComentario;";
+	$deleteLikes = " DELETE FROM COMENTARIO_LIKE WHERE COMENTARIO_OCORRENCIA_COD_CO = $codComentario;";
 	
 	$dellike = mysqli_query($connect, $deleteLikes);
 
