@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Profiler</string>
+    <string name="app_name">ProfilerProject</string>
+    <string-array name="Tipos">
+        <item>Tipo 1</item>
+        <item>Tipo 2</item>
+        <item>Tipo 3</item>
+    </string-array>
 </resources>
