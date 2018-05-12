@@ -16,7 +16,7 @@ function createInteracaoComentarioLike()
 
     //verificar se existe na tabela de dislike alguma interacao
     $querySelectDislike = "SELECT *FROM COMENTARIO_LIKE 
-                            WHERE USUARIO_COD_USUARIO = $codUsuario AND COMENTARIO_COD_COMENTARIO = $codComentario";
+                            WHERE COMENTARIO_OCORRENCIA_USUARIO_COD_USUARIO = $codUsuario AND COMENTARIO_OCORRENCIA_COD_CO = $codComentario";
     $selectDislike = mysqli_query($connect, $querySelectDislike);
     $number_of_rows_Dislike = mysqli_num_rows($selectDislike);
 
@@ -45,7 +45,7 @@ function createInteracaoComentarioLike()
 
 
     $querySelect = " SELECT *FROM COMENTARIO_LIKE
-                         WHERE USUARIO_COD_USUARIO = $codUsuario AND COMENTARIO_COD_COMENTARIO = $codComentario";
+                         WHERE COMENTARIO_OCORRENCIA_USUARIO_COD_USUARIO = $codUsuario AND COMENTARIO_OCORRENCIA_COD_CO = $codComentario";
 
     $select = mysqli_query($connect, $querySelect);
     $number_of_rows = mysqli_num_rows($select);
@@ -57,7 +57,7 @@ function createInteracaoComentarioLike()
 
             $codComentarioLike = $registro['COD_COMENTARIO_LIKE'];
 
-            $query = " DELETE FROM INTERACAO_OCORRENCIA_LIKE WHERE COD_INTERACAO = $codComentarioLike; ";
+            $query = " DELETE FROM INTERACAO_OCORRENCIA_LIKE WHERE COD_COMENTARIO_LIKE = $codComentarioLike; ";
 
             $deleted = mysqli_query($connect, $query);
 
@@ -72,7 +72,7 @@ function createInteracaoComentarioLike()
     }
 
 
-    $query = " INSERT INTO COMENTARIO_LIKE (LIKE, COMENTARIO_COD_COMENTARIO, USUARIO_COD_USUARIO) 
+    $query = " INSERT INTO COMENTARIO_LIKE (COMENTARIO_LIKE, COMENTARIO_OCORRENCIA_COD_CO, COMENTARIO_OCORRENCIA_USUARIO_COD_USUARIO) 
                VALUES (1,$codComentario,$codUsuario);";
 
     //SE NÃO ACHAR NADA NA BASE, ENTAO POSSO REALIZAR O INSERT NA BASE DE DADOS
