@@ -14,7 +14,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         }
         else
         {
-            echo json_encode("Codigo do comentario e de usuario nao pode ser nulo!");
+            echo json_encode("Codigo do comentario nao pode ser nulo!");
         }
     }
 
