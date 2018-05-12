@@ -72,7 +72,7 @@ function createInteracaoComentarioDislike()
     }
 
 
-    $query = " INSERT INTO COMENTARIO_LIKE (COMENTARIO_LIKE, COMENTARIO_OCORRENCIA_COD_CO, COMENTARIO_OCORRENCIA_USUARIO_COD_USUARIO) 
+    $query = " INSERT INTO COMENTARIO_DISLIKE (COMENTARIO_DISLIKE, COMENTARIO_OCORRENCIA_COD_CO, COMENTARIO_OCORRENCIA_USUARIO_COD_USUARIO) 
                VALUES (1,$codComentario,$codUsuario);";
 
     //SE NÃO ACHAR NADA NA BASE, ENTAO POSSO REALIZAR O INSERT NA BASE DE DADOS
@@ -81,10 +81,10 @@ function createInteracaoComentarioDislike()
 
 
         if($inserted == 1){
-            $json['success'] = "Comentario like inserida com sucesso!";
+            $json['success'] = "Comentario dislike inserida com sucesso!";
         }
         else{
-            $json['error'] = "Houve um erro ao salvar a Comentario like!";
+            $json['error'] = "Houve um erro ao salvar a Comentario dislike!";
 
         }
     }
