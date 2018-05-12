@@ -11,7 +11,7 @@ function showComentarioDislike()
 
     $_SESSION["CodComentario_DISLIKE"] = "";
 
-    $query = " Select * FROM COMENTARIO_DISLIKE ORDER  BY COMENTARIO_COD_COMENTARIO";
+    $query = " Select * FROM COMENTARIO_DISLIKE ORDER  BY COMENTARIO_OCORRENCIA_COD_CO";
 
     $result = mysqli_query($connect, $query);
     $number_of_rows = mysqli_num_rows($result);
@@ -23,14 +23,14 @@ function showComentarioDislike()
 
         while($registro = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 
-            $codComentario = $registro['COMENTARIO_COD_COMENTARIO'];
+            $codComentario = $registro['COMENTARIO_OCORRENCIA_COD_CO'];
 
 
             if($codComentario <> $_SESSION["CodComentario_DISLIKE"]){
 
 
 
-                $select = " SELECT COMENTARIO_COD_COMENTARIO, COUNT(COMENTARIO_COD_COMENTARIO) AS QTD_DISLIKE FROM COMENTARIO_DISLIKE WHERE COMENTARIO_COD_COMENTARIO = $codComentario; ";
+                $select = " SELECT COMENTARIO_OCORRENCIA_COD_CO, COUNT(COMENTARIO_OCORRENCIA_COD_CO) AS QTD_DISLIKE FROM COMENTARIO_DISLIKE WHERE COMENTARIO_COD_COMENTARIO = $codComentario; ";
 
                 $resultCount = mysqli_query($connect, $select);
                 $number_of_rows_count = mysqli_num_rows($resultCount);
