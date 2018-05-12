@@ -11,7 +11,7 @@ function showComentarioLike()
 
     $_SESSION["CodComentario_LIKE"] = "";
 
-    $query = " Select * FROM COMENTARIO_LIKE ORDER  BY COMENTARIO_COD_COMENTARIO";
+    $query = " Select * FROM COMENTARIO_LIKE ORDER  BY COMENTARIO_OCORRENCIA_COD_CO";
 
     $result = mysqli_query($connect, $query);
     $number_of_rows = mysqli_num_rows($result);
@@ -23,14 +23,14 @@ function showComentarioLike()
 
         while($registro = mysqli_fetch_array($result, MYSQLI_ASSOC)){
 
-            $codComentarioLike = $registro['COMENTARIO_COD_COMENTARIO'];
+            $codComentarioLike = $registro['COMENTARIO_OCORRENCIA_COD_CO'];
 
 
             if($codComentarioLike <> $_SESSION["CodComentario_LIKE"]){
 
 
 
-                $select = " SELECT COMENTARIO_COD_COMENTARIO, COUNT(COMENTARIO_COD_COMENTARIO) AS QTD_LIKE FROM COMENTARIO_LIKE WHERE COMENTARIO_COD_COMENTARIO = $codComentarioLike; ";
+                $select = " SELECT COMENTARIO_OCORRENCIA_COD_CO, COUNT(COMENTARIO_OCORRENCIA_COD_CO) AS QTD_LIKE FROM COMENTARIO_LIKE WHERE COMENTARIO_COD_COMENTARIO = $codComentarioLike; ";
 
                 $resultCount = mysqli_query($connect, $select);
                 $number_of_rows_count = mysqli_num_rows($resultCount);
