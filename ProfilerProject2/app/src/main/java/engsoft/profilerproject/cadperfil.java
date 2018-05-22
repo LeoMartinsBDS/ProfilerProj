@@ -55,7 +55,7 @@ public class cadperfil extends AppCompatActivity {
     private Uri filePath;
     private Bitmap bitmap;
     RequestQueue requestQueue;
-    String insertUrl = "http://profiler.getenjoyment.net/profiler/usuario/insertUsuario.php";
+    String insertUrl = "http://192.168.1.37/ProfilerProj/phpapi/Usuario/insertUsuario.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +88,6 @@ public class cadperfil extends AppCompatActivity {
                 else
                 {
                     criarperfil();
-                    sucesso();
                 }
             }
         });
@@ -158,6 +157,8 @@ public class cadperfil extends AppCompatActivity {
             }
         };
         requestQueue.add(request);
+
+        sucesso();
     }
     private void sucesso()
     {

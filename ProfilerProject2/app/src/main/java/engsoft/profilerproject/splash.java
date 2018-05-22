@@ -24,11 +24,17 @@ public class splash extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-            verificaConexao();
-            mensagem();
+
+        verificaConexao();
+        mensagem();
     }
     private void gohome() {
         Intent intent = new Intent(splash.this,home.class);
+        startActivity(intent);
+        finish();
+    }
+    private void gologin() {
+        Intent intent = new Intent(splash.this,login.class);
         startActivity(intent);
         finish();
     }
@@ -50,8 +56,20 @@ public class splash extends AppCompatActivity {
     {
         if(verificaConexao() == true)
         {
+            Session session = new Session(getApplicationContext());
+
             Handler handle = new Handler();
-            handle.postDelayed(new Runnable() {@Override public void run() {gohome(); }}, 3500);
+
+            if(session.getCodigoUsuario() != "")
+            {
+                handle.postDelayed(new Runnable() {@Override public void run() {gohome(); }}, 3500);
+            }
+            else
+            {
+                handle.postDelayed(new Runnable() {@Override public void run() {gologin(); }}, 3500);
+            }
+
+
         }
         else
         {
