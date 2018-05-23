@@ -22,24 +22,31 @@ function logIn($email,$senha){
 
     global $connect;
 
+    $senha_md5 = md5($senha);
 
-    $query = "SELECT *FROM USUARIO WHERE EMAIL = '$email' AND SENHA = '$senha'";
+    $query = "SELECT *FROM USUARIO WHERE EMAIL = '$email' AND SENHA = '$senha_md5'";
 
 
     $result = mysqli_query($connect, $query);
     $number_of_rows = mysqli_num_rows($result);
 
+
     if($number_of_rows > 0)
     {
-        $json['success'] = 'Ola :)';
-        echo json_encode($json);
-        mysqli_close($connect);
+        while ($row = mysqli_fetch_assoc($result)) {
+            $temp_array[] = $row;
+        }
+        header('Content-Type: application/json');
+        echo json_encode(array("usuario"=>$temp_array));
+
     }
     else
     {
         $json['error'] = 'Email ou senha estao incorretos';
         echo json_encode($json);
     }
+
+    mysqli_close($connect);
 }
 
 
