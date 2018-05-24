@@ -9,17 +9,49 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 function createUsuario()
 {
 	global $connect;
-	
-	$data_nascimento = $_POST["DATA_NASCIMENTO"];
-	$email = $_POST["EMAIL"];
-	$foto = $_POST["FOTO"];
-    $nome = $_POST["NOME"];
-    $reputacao = $_POST["REPUTACAO"];
-    $senha = $_POST["SENHA"];
 
-    $senha_md5 = md5($senha);
-	
-	$query = " INSERT INTO USUARIO(data_nascimento,email,foto,nome,reputacao,senha) VALUES ('$data_nascimento','$email','$foto','$nome','$reputacao','$senha_md5');";
+
+	if(isset($_POST["IDADE"]))
+    {
+	    $idade = $_POST["IDADE"];
+    }
+
+    if(isset($_POST["EMAIL"]))
+    {
+	    $email = $_POST["EMAIL"];
+    }
+
+    if(isset($_POST["FOTO"]))
+    {
+        $foto = $_POST["FOTO"];
+    }
+
+    if(isset($_POST["NOME"]))
+    {
+        $nome = $_POST["NOME"];
+    }
+
+    if(isset($_POST["REPUTACAO"]))
+    {
+        $reputacao = $_POST["REPUTACAO"];
+    }
+
+    if(isset($_POST["SENHA"]))
+    {
+        $senha = $_POST["SENHA"];
+        $senha_md5 = md5($senha);
+    }
+
+
+	if(isset($_POST["IDADE"]) && isset($_POST["EMAIL"]) && isset($_POST["SENHA"]) && isset($_POST["NOME"]) )
+    {
+        $query = " INSERT INTO USUARIO(idade,email,foto,nome,reputacao,senha) VALUES ('$idade','$email','$foto','$nome','$reputacao','$senha_md5');";
+
+    }
+    else
+    {
+        $query = " INSERT INTO USUARIO(idade) VALUES ('''');";
+    }
 
     $inserted = mysqli_query($connect, $query);
 
@@ -43,9 +75,9 @@ function createUsuario()
     }
     else{
         $json['error'] = "Houve um erro ao salvar usuario!";
-
+        echo json_encode($json);
     }
-    echo json_encode($json);
+
     mysqli_close($connect);
 	
 }
