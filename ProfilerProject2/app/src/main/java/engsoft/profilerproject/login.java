@@ -1,10 +1,14 @@
 package engsoft.profilerproject;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +34,7 @@ import java.util.Map;
 public class login extends AppCompatActivity {
     private ImageView fechar;
     private Button logar;
+    private AlertDialog alerta;
     private EditText email, senha;
     RequestQueue requestQueue;
     private StringRequest request;
@@ -44,6 +49,7 @@ public class login extends AppCompatActivity {
         email = (EditText) findViewById(R.id.editText14);
         senha = (EditText) findViewById(R.id.editText15);
 
+
         logar = (Button) findViewById(R.id.button8);
 
         requestQueue = Volley.newRequestQueue(this);
@@ -52,49 +58,117 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                request = new StringRequest(Request.Method.POST, selectUsuario, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            if(jsonObject.names().get(0).equals("usuario")){
-                                //loga e inicia app
+                if (email.getText().toString().equals("") || senha.getText().toString().equals("")) {
+                    Log.d("IF", "vazio");
+                    camposVazios();
+                } else {
+                    realizarLogin();
+                }
 
-                                Session session = new Session(getApplicationContext());
-
-                                session.setCodigoUsuario(jsonObject.getString("COD_USUARIO"));
-
-                                Toast.makeText(getApplicationContext(),"Bem-vindo"+jsonObject.getString("NOME"),Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getApplicationContext(),home.class));
-
-                            }else {
-                                Toast.makeText(getApplicationContext(), "Error" +jsonObject.getString("error"), Toast.LENGTH_SHORT).show();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }){
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        HashMap<String,String> hashMap = new HashMap<String, String>();
-                        hashMap.put("EMAIL",email.getText().toString());
-                        hashMap.put("SENHA",senha.getText().toString());
-
-                        return hashMap;
-                    }
-                };
-
-                requestQueue.add(request);
             }
         });
     }
+    private void camposVazios() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(login.this);
+        //define o titulo
+        builder.setTitle("Erro");
+        //define a mensagem
+        builder.setMessage("Email e senha não podem ser nulos!");
+        builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                alerta.dismiss();
+            }
+        });
+        //cria o AlertDialog
+        alerta = builder.create();
+        //Exibe
+        alerta.show();
+
+    }
+
+    private void realizarLogin() {
+        request = new StringRequest(Request.Method.POST, selectUsuario, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+
+
+                    if(jsonObject.names().get(0).equals("usuario")){
+                        //loga e inicia app
+                        JSONArray arrayUsuario = jsonObject.getJSONArray("usuario");
+
+                        String codUsuario = null, nome = null;
+
+                        for (int i = 0; i < arrayUsuario.length(); i++)
+                        {
+                            JSONObject usuario = arrayUsuario.getJSONObject(i);
+
+                            codUsuario = usuario.getString("COD_USUARIO");
+                            nome = usuario.getString("NOME");
+
+                        }
+
+                        Session session = new Session(getApplicationContext());
+
+
+                        session.setCodigoUsuario(codUsuario);
+
+                        Toast.makeText(getApplicationContext(),"Bem-vindo "+ nome,Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(login.this,home.class));
+
+                    }else {
+
+                        //Cria o gerador do AlertDialog
+                        AlertDialog.Builder builder = new AlertDialog.Builder(login.this);
+                        //define o titulo
+                        builder.setTitle("Erro");
+                        //define a mensagem
+                        builder.setMessage("Email ou senha incorretos! Deseja tentar novamente ou criar uma nova conta?");
+
+                        builder.setNegativeButton("Tentar Novamente", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                alerta.dismiss();
+                            }
+                        });
+                        builder.setPositiveButton("Nova Conta", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                criarNovaConta();
+                            }
+                        });
+                        //cria o AlertDialog
+                        alerta = builder.create();
+                        //Exibe
+                        alerta.show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> hashMap = new HashMap<String, String>();
+                hashMap.put("EMAIL",email.getText().toString());
+                hashMap.put("SENHA",senha.getText().toString());
+
+                return hashMap;
+            }
+        };
+
+        requestQueue.add(request);
+    }
+
+    private void criarNovaConta() {
+
+    }
 }
+
