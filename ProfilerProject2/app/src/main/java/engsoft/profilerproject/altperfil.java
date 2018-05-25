@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -26,17 +28,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class altperfil extends AppCompatActivity {
-    private ImageView fechar, upload;
+    private ImageView fechar, upload, image;
     private AlertDialog alerta;
     private EditText nome, email, idade, senha;
     private StringRequest request;
     private int PICK_IMAGE_REQUEST = 1;
     private Uri filePath;
     private Bitmap bitmap;
+    private String foto;
     RequestQueue requestQueue;
     String selectUsuario = "http://192.168.1.37/ProfilerProj/phpapi/Usuario/showUsuario.php";
 
@@ -66,12 +72,13 @@ public class altperfil extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
 
 
-                    if(jsonObject.names().get(0).equals("usuario")){
+                    if(jsonObject.names().get(0).equals("usuarios")){
                         //loga e inicia app
                         JSONArray arrayUsuario = jsonObject.getJSONArray("usuarios");
 
                         for (int i = 0; i < arrayUsuario.length(); i++)
                         {
+
                             JSONObject usuario = arrayUsuario.getJSONObject(i);
 
                             nome = (EditText)findViewById(R.id.editText10);
@@ -82,6 +89,20 @@ public class altperfil extends AppCompatActivity {
 
                             idade = (EditText)findViewById(R.id.editText13);
                             idade.setText(usuario.getString("IDADE"));
+                            image = (ImageView) findViewById(R.id.imageView27);
+
+                            //foto
+                            foto = usuario.getString("FOTO");
+
+                            if(!foto.equals("")){
+
+                                Log.d("IF", "ENTREI");
+
+                                byte [] encodeByte= Base64.decode(foto,Base64.DEFAULT);
+                                bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+
+                                image.setImageBitmap(bitmap);
+                            }
 
                         }
                     }else {
@@ -112,8 +133,6 @@ public class altperfil extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
         }, new Response.ErrorListener() {
             @Override
