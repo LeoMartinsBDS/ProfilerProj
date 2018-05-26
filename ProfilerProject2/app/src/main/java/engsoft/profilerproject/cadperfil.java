@@ -144,14 +144,14 @@ public class cadperfil extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("idade", idade.getText().toString());
-                parameters.put("email", email.getText().toString());
-                parameters.put("nome", nome.getText().toString());
-                parameters.put("senha", senha.getText().toString());
+                parameters.put("IDADE", idade.getText().toString());
+                parameters.put("EMAIL", email.getText().toString());
+                parameters.put("NOME", nome.getText().toString());
+                parameters.put("SENHA", senha.getText().toString());
                 //foto
                 Bitmap btimage=((BitmapDrawable)image.getDrawable()).getBitmap();
                 String uploadImage = getStringImage(btimage);
-                parameters.put("foto", uploadImage);
+                parameters.put("FOTO", uploadImage);
                 //foto
                 return parameters;
             }

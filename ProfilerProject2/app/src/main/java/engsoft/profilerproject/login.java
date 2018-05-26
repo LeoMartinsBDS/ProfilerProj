@@ -39,6 +39,7 @@ public class login extends AppCompatActivity {
     RequestQueue requestQueue;
     private StringRequest request;
     String selectUsuario = "http://192.168.1.37/ProfilerProj/phpapi/Usuario/controle_usuario.php";
+    String insertUsuarioURL = "http://192.168.1.37/ProfilerProj/phpapi/Usuario/insertUsuario.php";
 
 
     @Override
@@ -52,14 +53,13 @@ public class login extends AppCompatActivity {
 
         logar = (Button) findViewById(R.id.button8);
 
-        requestQueue = Volley.newRequestQueue(this);
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         logar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (email.getText().toString().equals("") || senha.getText().toString().equals("")) {
-                    Log.d("IF", "vazio");
                     camposVazios();
                 } else {
                     realizarLogin();
@@ -168,7 +168,45 @@ public class login extends AppCompatActivity {
     }
 
     private void criarNovaConta() {
+        StringRequest request = new StringRequest(Request.Method.POST, insertUsuarioURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
 
+                    if(jsonObject.names().get(0).equals("codUsuario")){
+                        //loga e inicia app
+                        JSONArray arrayLastInsertedID = jsonObject.getJSONArray("codUsuario");
+
+                        String codUsuario = null;
+
+                        for (int i = 0; i < arrayLastInsertedID.length(); i++)
+                        {
+                            JSONObject usuario = arrayLastInsertedID.getJSONObject(i);
+
+                            codUsuario = usuario.getString("LAST_INSERT_ID()");
+                        }
+
+                        Session session = new Session(getApplicationContext());
+
+
+                        session.setCodigoUsuario(codUsuario);
+
+                        Toast.makeText(getApplicationContext(),"Bem-vindo! ",Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(login.this,home.class));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        requestQueue.add(request);
     }
 }
 
