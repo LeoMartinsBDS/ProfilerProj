@@ -23,9 +23,9 @@ function updateUsuario($cod_user)
 {
 	global $connect;
 	
-	if(isset($_POST['DATA_NASCIMENTO']))
+	if(isset($_POST['IDADE']))
 	{
-		$data_nascimento = $_POST["DATA_NASCIMENTO"];
+		$idade = $_POST["IDADE"];
 	}
 	
 	if(isset($_POST['EMAIL']))
@@ -51,13 +51,16 @@ function updateUsuario($cod_user)
 	
 	$senha = md5($senha);
 	
-	$query = " UPDATE USUARIO SET DATA_NASCIMENTO= '$data_nascimento'
+	$query = " UPDATE USUARIO SET IDADE= '$idade'
 			   ,EMAIL = '$email'
 			   ,FOTO = '$foto'
 			   ,NOME = '$nome'
 			   ,SENHA = '$senha'
 			   WHERE COD_USUARIO = $cod_user
 	";
+
+    echo $query;
+
     $updated = mysqli_query($connect, $query);
 
     if($updated == 1){
