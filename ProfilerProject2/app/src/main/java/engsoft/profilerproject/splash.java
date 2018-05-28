@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -26,6 +27,7 @@ public class splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         verificaConexao();
+        verificaGPS();
         mensagem();
     }
     private void gohome() {
@@ -38,6 +40,28 @@ public class splash extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+
+    public boolean verificaGPS(){
+        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception ex) {
+
+        }
+        if(gps_enabled)
+        {
+            return true;
+        }
+
+
+        return false;
+    }
+
+
     public boolean verificaConexao()
     {
         boolean conexao;
@@ -52,22 +76,40 @@ public class splash extends AppCompatActivity {
         }
         return conexao;
     }
+
     private void mensagem()
     {
         if(verificaConexao() == true)
         {
-            Session session = new Session(getApplicationContext());
+            if(verificaGPS() == true) {
+                Session session = new Session(getApplicationContext());
 
-            Handler handle = new Handler();
+                Handler handle = new Handler();
 
-            if(session.getCodigoUsuario() != "")
-            {
-                handle.postDelayed(new Runnable() {@Override public void run() {gohome(); }}, 3500);
+                if (session.getCodigoUsuario() != "") {
+                    handle.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            gohome();
+                        }
+                    }, 3500);
+                } else {
+                    handle.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            gologin();
+                        }
+                    }, 3500);
+                }
             }
-            else
-            {
-                handle.postDelayed(new Runnable() {@Override public void run() {gologin(); }}, 3500);
-            }
+             else{
+                new AlertDialog.Builder(this)
+                        .setTitle("GPS desativado")
+                        .setMessage("O GPS esta desativado, por favor, habilite o GPS para o uso do aplicativo.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener()
+                        {@Override public void onClick(DialogInterface dialogInterface, int i) {mensagem();}})
+                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){@Override public void onClick(DialogInterface dialogInterface, int i) {finish();}}).show();
+                }
 
 
         }
