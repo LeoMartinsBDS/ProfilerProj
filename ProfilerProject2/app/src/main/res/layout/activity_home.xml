@@ -18,6 +18,20 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@android:color/background_light" />
 
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintLeft_toLeftOf="@+id/imageView"
+        app:layout_constraintRight_toRightOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="0dp"
