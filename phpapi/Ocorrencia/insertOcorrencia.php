@@ -12,6 +12,11 @@ function createOcorrencia()
 	
 	$localidade = $_POST["LOCALIDADE"];
 	$data_hora = $_POST["DATA_HORA"];
+
+	$data_hora = strtr($data_hora, "/", "-");
+
+    $data_hora_convertido = date('Y-m-d h:m',strtotime($data_hora));
+
 	$descricao = $_POST["DESCRICAO"];
     $status_cod_status = $_POST["COD_STATUS"];
     $tipo_cod_tipo = $_POST["COD_TIPO"];
@@ -19,7 +24,7 @@ function createOcorrencia()
     $foto = $_POST["FOTO"];
 	
 	$query = " INSERT INTO OCORRENCIA (LOCALIDADE,DATA_HORA,DESCRICAO,FOTO,STATUS_COD_STATUS,TIPO_COD_TIPO,USUARIO_COD_USUARIO) 
-              VALUES ('$localidade','$data_hora','$descricao','$foto','$status_cod_status','$tipo_cod_tipo','$usuario');";
+              VALUES ('$localidade','$data_hora_convertido','$descricao','$foto','$status_cod_status','$tipo_cod_tipo','$usuario');";
 
 	$inserted = mysqli_query($connect, $query);
 
