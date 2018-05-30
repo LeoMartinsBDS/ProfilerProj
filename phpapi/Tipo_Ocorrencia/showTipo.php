@@ -9,6 +9,7 @@ function showTipoOcorrencia()
 {
     global $connect;
 
+
     $query = " Select * FROM TIPO";
 
     $result = mysqli_query($connect, $query);
