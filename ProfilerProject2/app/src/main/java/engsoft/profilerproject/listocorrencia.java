@@ -58,7 +58,11 @@ public class listocorrencia extends AppCompatActivity {
 
         //NESSA PARTE EU ESTOU FAZENDO COM QUE SEJA LANCADO NA LISTA OS DADOS RETORNADOS DO JSON
         lv.setAdapter(new ListOcorrencias(this, R.layout.list_view, textoOcorrencia));
+<<<<<<< HEAD
         lv.setAdapter(new ListOcorrencias(this, R.layout.list_view, photoOcorrencia));
+=======
+        //lv.setAdapter(new ListOcorrencias(this, R.layout.list_view, photoOcorrencia));
+>>>>>>> a0d6479ee8619cf46f593125f0c4f9176984c92d
         //lv.setAdapter(new ListOcorrencias(this, R.layout.list_view, likesOcorrencia));
 
         fechar = (ImageView) findViewById(R.id.imageView36);
@@ -201,11 +205,15 @@ public class listocorrencia extends AppCompatActivity {
             else{
                 mainViewHolder = (ViewHolder)convertView.getTag();
                 mainViewHolder.descricao.setText(getItem(position));
+<<<<<<< HEAD
                 //***
                 byte [] encodeByte = Base64.decode(getItem(position),Base64.DEFAULT);
                 bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
                 mainViewHolder.photo.setImageBitmap(bitmap);
                 //***
+=======
+                //mainViewHolder.photo.setImageBitmap(BitmapFactory.decodeFile(getItem(position)));
+>>>>>>> a0d6479ee8619cf46f593125f0c4f9176984c92d
                 //mainViewHolder.like.setText(getItem(position));
 
             }
