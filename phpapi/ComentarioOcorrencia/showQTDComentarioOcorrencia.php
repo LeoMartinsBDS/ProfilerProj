@@ -2,10 +2,10 @@
 
 if($_SERVER["REQUEST_METHOD"]=="POST"){
     require '../connection.php';
-    showInteracaoLike();
+    showQtdComentarioOcorrencia();
 }
 
-function showInteracaoLike()
+function showQtdComentarioOcorrencia()
 {
     global $connect;
 
