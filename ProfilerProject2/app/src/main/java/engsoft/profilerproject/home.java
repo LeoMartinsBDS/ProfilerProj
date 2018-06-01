@@ -9,17 +9,39 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class home extends AppCompatActivity {
+public class home extends AppCompatActivity //implements OnMapReadyCallback
+{
     private Button Cad;
     private Button List;
     private ImageView menu;
+    private GoogleMap mMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        //Exemplo Marker
+        /*final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                mapFragment.getMapAsync(this);
+                mMap = googleMap;
+                LatLng sydney = new LatLng(-22.7397892,-47.3503339);
+                mMap.addMarker(new MarkerOptions().position(sydney).title("Teste")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            }
+        });*/
 
         menu = (ImageView) findViewById(R.id.imageView5);
         menu.setOnClickListener(new View.OnClickListener() {
