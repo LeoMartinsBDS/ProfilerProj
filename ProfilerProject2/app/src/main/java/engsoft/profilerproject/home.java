@@ -23,15 +23,20 @@ public class home extends AppCompatActivity //implements OnMapReadyCallback
     private Button List;
     private ImageView menu;
     private GoogleMap mMap;
+    private LatLng mOrigem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         //Exemplo Marker
-        /*final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
+        mMap = fragment.getMap();
+        mMap .setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        mOrigem = new LatLng();
+        atualizarMapa();
+        /*mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mapFragment.getMapAsync(this);
@@ -67,5 +72,13 @@ public class home extends AppCompatActivity //implements OnMapReadyCallback
                 startActivity(intent);
             }
         });
+    }
+    private void atualizarMapa()
+    {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mOrigem, 17.0f));
+        mMap.addMarker(new MarkerOptions()
+        .position(mOrigem)
+        .title("Teste")
+        .snippet("Teste"));
     }
 }
