@@ -30,7 +30,7 @@ public class home extends AppCompatActivity //implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         //Exemplo Marker
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        /*SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mMap = fragment.getMap();
         mMap .setMapType(GoogleMap.MAP_TYPE_SATELLITE);
@@ -73,6 +73,8 @@ public class home extends AppCompatActivity //implements OnMapReadyCallback
             }
         });
     }
+
+    /*
     private void atualizarMapa()
     {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mOrigem, 17.0f));
@@ -81,4 +83,5 @@ public class home extends AppCompatActivity //implements OnMapReadyCallback
         .title("Teste")
         .snippet("Teste"));
     }
+    */
 }
