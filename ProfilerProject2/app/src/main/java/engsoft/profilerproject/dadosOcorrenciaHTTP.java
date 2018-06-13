@@ -3,6 +3,7 @@ package engsoft.profilerproject;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +31,7 @@ public class dadosOcorrenciaHTTP {
         HttpURLConnection conexao = (HttpURLConnection)url.openConnection();
         conexao.setReadTimeout(10 * SEGUNDOS);
         conexao.setConnectTimeout(15 * SEGUNDOS);
-        conexao.setRequestMethod("GET");
+        conexao.setRequestMethod("POST");
         conexao.setDoInput(true);
         conexao.setDoOutput(false);
         conexao.connect();
@@ -67,6 +68,7 @@ public class dadosOcorrenciaHTTP {
         String ocorrencias;
 
         JSONArray jsonOcorrencias = json.getJSONArray("ocorrencias");
+        Log.d("OCORRENCIAS", String.valueOf(jsonOcorrencias));
         for(int i = 0; i < jsonOcorrencias.length(); i++)
         {
             JSONObject jsonOcorrencia = jsonOcorrencias.getJSONObject(i);

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -32,11 +34,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static engsoft.profilerproject.R.layout.activity_listocorrencia;
 
-public class listOcorrenciaFragment extends InternetFragment {
+public class listOcorrenciaFragment extends InternetFragment  {
     private Bitmap bitmap;
+    OcorrenciasTask mTaskOCO;
     List<dadosOcorrencia> mOcorrencias;
+    TextView mTextMensagem;
     ArrayAdapter<dadosOcorrencia> mAdapter;
     ListView mListView;
 
@@ -47,10 +50,13 @@ public class listOcorrenciaFragment extends InternetFragment {
         setRetainInstance(true);
     }
 
-
     @Override
-    public void iniciarDownload() {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View layout = inflater.inflate(R.layout.fragment_ocorrencias_list, null);
+        mListView = (ListView)layout.findViewById(R.id.list);
+        mListView.setEmptyView(mTextMensagem);
+        return layout;
     }
 
     @Override
@@ -60,54 +66,56 @@ public class listOcorrenciaFragment extends InternetFragment {
         if (mOcorrencias == null) {
             mOcorrencias = new ArrayList<dadosOcorrencia>();
         }
-        mAdapter = new ListOcorrenciasAdapter(getActivity(), mOcorrencias);
+        mAdapter = new ocorrenciasListAdapter(getActivity(), mOcorrencias);
         mListView.setAdapter(mAdapter);
 
-    }
-
-
-    private class ListOcorrenciasAdapter extends ArrayAdapter<dadosOcorrencia>{
-        private ListOcorrenciasAdapter(Context context, List<dadosOcorrencia> objects){
-            super(context,0, objects);
+        if (mTaskOCO == null) {
+            if (dadosOcorrenciaHTTP.temConexao(getActivity())) {
+                iniciarDownload();
+            } else {
+                Log.d("ERRO CONEXAO", "Sem conexão");
+            }
+        } else if (mTaskOCO.getStatus() == AsyncTask.Status.RUNNING) {
+            //exibirProgress(true);
         }
 
+    }
+
+    @Override
+    public void iniciarDownload() {
+        if (mTaskOCO == null ||  mTaskOCO.getStatus() != AsyncTask.Status.RUNNING) {
+            mTaskOCO = new OcorrenciasTask();
+            mTaskOCO.execute();
+        }
+    }
+
+    class OcorrenciasTask extends AsyncTask<Void, Void, List<dadosOcorrencia>> {
 
         @Override
-        public View getView(final int position, View convertView, ViewGroup parent){
-            dadosOcorrencia dadosOco = getItem(position);
-
-            ViewHolder holder;
-
-            //aqui é gerado a view com os campos
-            if(convertView == null){
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_view, null);
-                holder = new ViewHolder();
-                holder.photo = (ImageView) convertView.findViewById(R.id.imageView37);
-                holder.descricao = (TextView)convertView.findViewById(R.id.list_item_text);
-                holder.like = (Button)convertView.findViewById(R.id.list_item_btn);
-                holder.like.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getContext(),"Button was clicked for list item" + position, Toast.LENGTH_SHORT).show();
-                    }
-                });
-                convertView.setTag(holder);
-            }
-            else{
-                holder = (ViewHolder)convertView.getTag();
-            }
-            holder.descricao.setText(dadosOco.DescricaoOcorrencia);
-            holder.like.setText(dadosOco.QtdLike);
-
-            return convertView;
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //exibirProgress(true);
         }
 
+        @Override
+        protected List<dadosOcorrencia> doInBackground(Void... strings) {
+            return dadosOcorrenciaHTTP.carregarOcorrenciasJson();
+            //return LivroHttp.carregarLivrosXml();
+        }
 
+        @Override
+        protected void onPostExecute(List<dadosOcorrencia> dadosOco) {
+            super.onPostExecute(dadosOco);
+            //exibirProgress(false);
+            if (dadosOco != null) {
+                mOcorrencias.clear();
+                mOcorrencias.addAll(dadosOco);
+                mAdapter.notifyDataSetChanged();
+            } else {
+                Log.d("ERRO LISTA", "Erro ao obter Lista");
+                //Toast.makeText("Erro ao obter ocrrencias!", Toast.LENGTH_LONG);
+            }
+        }
     }
 
-    public class ViewHolder{
-        ImageView photo;
-        TextView descricao;
-        Button like;
-    }
 }
