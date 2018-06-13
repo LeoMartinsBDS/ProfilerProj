@@ -29,7 +29,7 @@ public class ocorrenciasListAdapter extends ArrayAdapter<dadosOcorrencia> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        dadosOcorrencia dadosOco = getItem(position);
+        final dadosOcorrencia dadosOco = getItem(position);
 
         ViewHolder holder;
         if(convertView == null){
@@ -56,7 +56,7 @@ public class ocorrenciasListAdapter extends ArrayAdapter<dadosOcorrencia> {
             holder.comentario.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext(),"COMENTARIO", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),dadosOco.Cod_Ocorrencia, Toast.LENGTH_SHORT).show();
                 }
             });
             convertView.setTag(holder);

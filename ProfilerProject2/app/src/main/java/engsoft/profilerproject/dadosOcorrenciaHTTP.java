@@ -68,7 +68,6 @@ public class dadosOcorrenciaHTTP {
         String ocorrencias;
 
         JSONArray jsonOcorrencias = json.getJSONArray("ocorrencias");
-        Log.d("OCORRENCIAS", String.valueOf(jsonOcorrencias));
         for(int i = 0; i < jsonOcorrencias.length(); i++)
         {
             JSONObject jsonOcorrencia = jsonOcorrencias.getJSONObject(i);
@@ -79,6 +78,7 @@ public class dadosOcorrenciaHTTP {
                     jsonOcorrencia.getString("DESCRICAO_STATUS"),
                     jsonOcorrencia.getString("DATA_HORA"),
                     jsonOcorrencia.getString("FOTO"),
+                    jsonOcorrencia.getString("COD_OCORRENCIA"),
                     jsonOcorrencia.getInt("QTD_CO"),
                     jsonOcorrencia.getInt("QTD_LIKE"),
                     jsonOcorrencia.getInt("QTD_DISLIKE")
